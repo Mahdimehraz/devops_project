@@ -5,6 +5,15 @@ This project showcases DevOps skills by containerizing a full-stack Todo applica
 
 ---
 
+## Deployment
+
+This project is deployed on the following server:
+- **IP Address**: [130.185.72.67](http://130.185.72.67)
+
+**Note**: MongoDB version 4.4 is used, which affects proper monitoring of MongoDB, so some monitoring features might not work as expected.
+
+---
+
 ## Installation
 
 Follow these steps to set up and run the project on your server:
@@ -117,6 +126,13 @@ curl -X PUT http://server_ip:4000/todos/{todo_id} \
 ```bash
 curl -X DELETE http://server_ip:4000/todos/{todo_id} \
      -H "Authorization: Bearer your_jwt_token_here"
+```
+
+### Health Check
+
+Ensure the backend is running properly with this health check API:
+```bash
+curl -X GET http://130.185.72.67:4000/health
 ```
 
 ---
