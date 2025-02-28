@@ -1,0 +1,52 @@
+services:
+  prometheus:
+    image: docker.arvancloud.ir/prom/prometheus:v3.1.0
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=90d
+      - --storage.tsdb.retention.size=15GB
+      - --web.enable-lifecycle
+    ports:
+      - 9090:9090
+    networks:
+      - web
+
+  node-exporter:
+    image: docker.arvancloud.ir/prom/node-exporter:v1.8.2
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - web
+
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter:0.43.1
+    container_name: mongodb-exporter
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+    ports:
+      - "9216:9216"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  prometheus_data:
+
