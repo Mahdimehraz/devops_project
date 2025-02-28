@@ -132,7 +132,7 @@ curl -X DELETE http://server_ip:4000/todos/{todo_id} \
 
 Ensure the backend is running properly with this health check API:
 ```bash
-curl -X GET http://130.185.72.67:4000/health
+curl -X GET http://server_ip:4000/health
 ```
 
 ---
